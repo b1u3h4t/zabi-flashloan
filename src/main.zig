@@ -57,8 +57,21 @@ pub fn main() !void {
         else => unreachable,
     };
     std.debug.print("Transfer function: {s}\n", .{transfer_func.name});
+
+    const data = try transfer_func.encodeFromReflection(gpa.allocator(), .{ contract.getWalletAddress(), 0 });
+    std.debug.print("data len: {d}\n", .{data.len});
+    defer gpa.allocator().free(data);
+
+    const tx_envelope = try contract.prepareTransaction(.{
+        .type = .london,
+        .data = data,
+        .to = try utils.addressToBytes("0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E"),
+    });
+    std.debug.print("Gas used: {d}\n", .{tx_envelope.london.gas});
+
     const transfer = contract.writeContractFunction(transfer_func, .{ contract.getWalletAddress(), 0 }, .{
         .type = .london,
+        .gas = tx_envelope.london.gas,
         .to = try utils.addressToBytes("0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E"),
     }) catch |err| {
         std.debug.print("Error in writeContractFunction: {}\n", .{err});

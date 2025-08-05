@@ -127,6 +127,27 @@ pub fn build(b: *std.Build) void {
     const run_avalanche_step = b.step("test-avalanche", "Run Avalanche test");
     run_avalanche_step.dependOn(&run_avalanche_cmd.step);
 
+    // Create JSON parsing test executable
+    const json_test_mod = b.createModule(.{
+        .root_source_file = b.path("src/test_json_parsing.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    json_test_mod.addImport("zabi", zabi_module);
+    json_test_mod.addImport("zabi_flashloan_lib", lib_mod);
+
+    const json_test_exe = b.addExecutable(.{
+        .name = "test_json_parsing",
+        .root_module = json_test_mod,
+    });
+    b.installArtifact(json_test_exe);
+
+    const run_json_test_cmd = b.addRunArtifact(json_test_exe);
+    run_json_test_cmd.step.dependOn(b.getInstallStep());
+
+    const run_json_test_step = b.step("test-json", "Run JSON parsing test");
+    run_json_test_step.dependOn(&run_json_test_cmd.step);
+
     // Creates a step for unit testing. This only builds the test executable
     // but does not run it.
     const lib_unit_tests = b.addTest(.{

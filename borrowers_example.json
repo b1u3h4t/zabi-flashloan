@@ -1,0 +1,25 @@
+{
+    "last_block_number": 12345678,
+    "borrowers": {
+        "0x1234567890123456789012345678901234567890": {
+            "address": "0x1234567890123456789012345678901234567890",
+            "collateral": [
+                "0xA0b86a33E6441214ca6fD15C1AE0123456789abc",
+                "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+            ],
+            "debt": [
+                "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+            ]
+        },
+        "0xabcdef1234567890abcdef1234567890abcdef12": {
+            "address": "0xabcdef1234567890abcdef1234567890abcdef12",
+            "collateral": [
+                "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+            ],
+            "debt": [
+                "0xA0b86a33E6441214ca6fD15C1AE0123456789abc",
+                "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+            ]
+        }
+    }
+}
